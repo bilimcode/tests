@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учебный портал</title>
+    <!-- Иконки FontAwesome и шрифт Nunito -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --accent: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border);
+        }
+
+        /* Индикатор шагов */
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            padding: 10px 18px;
+            border-radius: 12px;
+        }
+
+        .breadcrumbs span.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .step-page {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        .step-page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Сетка для выбора предметов и классов */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .card-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 25px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-btn i {
+            font-size: 2.2rem;
+            color: var(--primary);
+        }
+
+        .card-btn span {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .card-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Форма ввода пароля */
+        .password-box {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .timer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fef3c7;
+            color: #d97706;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 6px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+        }
+
+        .error-msg {
+            color: #ef4444;
+            margin-top: 10px;
+            font-weight: 600;
+            display: none;
+        }
+
+        /* Сетка уроков (34 урока) */
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .lesson-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .lesson-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        .lesson-btn {
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+            display: block;
+        }
+
+        .lesson-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Кнопка "Назад" */
+        .btn-back {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .btn-back:hover {
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-graduation-cap"></i> Учебный Портал</h1>
+        <p>Выберите предмет и класс для доступа к материалам урока</p>
+    </header>
+
+    <div class="container">
+        <!-- Навигационные крошки -->
+        <div class="breadcrumbs">
+            <span id="bc-subject" class="active"><i class="fa-solid fa-book"></i> Предмет</span>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span id="bc-class"><i class="fa-solid fa-users"></i> Класс</span>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span id="bc-pass"><i class="fa-solid fa-key"></i> Доступ</span>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span id="bc-lessons"><i class="fa-solid fa-list-check"></i> Уроки</span>
+        </div>
+
+        <!-- ШАГ 1: Выбор предмета -->
+        <div id="step-1" class="step-page active">
+            <h2>Выберите предмет</h2>
+            <div class="grid">
+                <div class="card-btn" onclick="selectSubject('Информатика', 'fa-laptop-code')">
+                    <i class="fa-solid fa-laptop-code"></i>
+                    <span>Информатика</span>
+                </div>
+                <div class="card-btn" onclick="selectSubject('Робототехника', 'fa-robot')">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Робототехника</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ШАГ 2: Выбор класса -->
+        <div id="step-2" class="step-page">
+            <button class="btn-back" onclick="goToStep(1)"><i class="fa-solid fa-arrow-left"></i> Назад к предметам</button>
+            <h2>Выберите ваш класс</h2>
+            <div class="grid">
+                <div class="card-btn" onclick="selectClass('5 Класс')">
+                    <i class="fa-solid fa-shapes"></i>
+                    <span>5 Класс</span>
+                </div>
+                <div class="card-btn" onclick="selectClass('6 Класс')">
+                    <i class="fa-solid fa-cubes"></i>
+                    <span>6 Класс</span>
+                </div>
+                <div class="card-btn" onclick="selectClass('7 Класс')">
+                    <i class="fa-solid fa-code"></i>
+                    <span>7 Класс</span>
+                </div>
+                <div class="card-btn" onclick="selectClass('8 Класс')">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>8 Класс</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ШАГ 3: Ввод одноразового пароля -->
+        <div id="step-3" class="step-page">
+            <button class="btn-back" onclick="goToStep(2)"><i class="fa-solid fa-arrow-left"></i> Назад к выбору класса</button>
+            <div class="password-box">
+                <h2>Введите одноразовый пароль</h2>
+                <div class="timer-badge">
+                    <i class="fa-solid fa-clock"></i> Пароль обновится через: <span id="seconds-left">60</span>с
+                </div>
+                <div class="input-group">
+                    <input type="text" id="pass-input" maxlength="6" placeholder="000000" autocomplete="off">
+                </div>
+                <button class="btn-submit" onclick="verifyPassword()">Войти на урок</button>
+                <div id="error-msg" class="error-msg">Неверный или истекший пароль! Введите актуальный код.</div>
+            </div>
+        </div>
+
+        <!-- ШАГ 4: Список из 34 уроков -->
+        <div id="step-4" class="step-page">
+            <button class="btn-back" onclick="goToStep(3)"><i class="fa-solid fa-lock"></i> Выйти</button>
+            <h2 id="lessons-heading">Уроки</h2>
+            <div class="lessons-grid" id="lessons-container">
+                <!-- 34 урока сгенерируются скриптом -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // СЕКРЕТНЫЙ КЛЮЧ УЧИТЕЛЯ (Измените на свою любую секретную строку!)
+        const SECRET_SALT = "MySchoolSecretKey2026";
+
+        let selectedSubject = '';
+        let selectedClass = '';
+
+        // Список 34 уроков с ссылками
+        const lessonLinks = Array.from({ length: 34 }, (_, i) => ({
+            id: i + 1,
+            title: `Урок ${i + 1}`,
+            url: `https://example.com/lesson-${i + 1}`
+        }));
+
+        // Генератор пароля (на основе текущей минуты)
+        function generateCurrentPassword() {
+            const now = new Date();
+            const minuteTimestamp = Math.floor(now.getTime() / 60000);
+            
+            const str = SECRET_SALT + minuteTimestamp;
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = (hash << 5) - hash + str.charCodeAt(i);
+                hash |= 0; 
+            }
+            const code = Math.abs(hash % 900000) + 100000;
+            return code.toString();
+        }
+
+        // Обратный отсчет секунд
+        function updateTimer() {
+            const now = new Date();
+            const secondsLeft = 60 - now.getSeconds();
+            document.getElementById('seconds-left').innerText = secondsLeft;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // Переключение шагов
+        function goToStep(step) {
+            document.querySelectorAll('.step-page').forEach(page => page.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+
+            document.getElementById('bc-subject').className = step >= 1 ? 'active' : '';
+            document.getElementById('bc-class').className = step >= 2 ? 'active' : '';
+            document.getElementById('bc-pass').className = step >= 3 ? 'active' : '';
+            document.getElementById('bc-lessons').className = step >= 4 ? 'active' : '';
+        }
+
+        function selectSubject(subjectName, iconClass) {
+            selectedSubject = subjectName;
+            document.getElementById('bc-subject').innerHTML = `<i class="fa-solid ${iconClass}"></i> ${subjectName}`;
+            goToStep(2);
+        }
+
+        function selectClass(className) {
+            selectedClass = className;
+            document.getElementById('bc-class').innerHTML = `<i class="fa-solid fa-users"></i> ${className}`;
+            goToStep(3);
+        }
+
+        function verifyPassword() {
+            const inputVal = document.getElementById('pass-input').value.trim();
+            const validPassword = generateCurrentPassword();
+
+            if (inputVal === validPassword) {
+                document.getElementById('error-msg').style.display = 'none';
+                document.getElementById('pass-input').value = '';
+                loadLessons();
+                goToStep(4);
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        // Рендер 34 уроков
+        function loadLessons() {
+            document.getElementById('lessons-heading').innerText = `${selectedSubject} — ${selectedClass}`;
+            const container = document.getElementById('lessons-container');
+            container.innerHTML = '';
+
+            lessonLinks.forEach(lesson => {
+                const card = document.createElement('div');
+                card.className = 'lesson-card';
+                card.innerHTML = `
+                    <div class="lesson-title"><i class="fa-solid fa-book-open"></i> ${lesson.title}</div>
+                    <a href="${lesson.url}" target="_blank" class="lesson-btn">
+                        Открыть задание <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
