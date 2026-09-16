@@ -1,0 +1,88 @@
+// Секретный ключ (УБЕДИТЕСЬ, ЧТО ОН СОВПАДАЕТ С КЛЮЧОМ В teacher.html)
+const SECRET_SALT = "MySchoolSecretKey2026";
+
+let selectedSubject = '';
+let selectedClass = '';
+
+// Алгоритм генерации временного 6-значного кода на 60 секунд
+function generateCurrentPassword() {
+    const now = new Date();
+    const minuteTimestamp = Math.floor(now.getTime() / 60000);
+    
+    const str = SECRET_SALT + minuteTimestamp;
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0; 
+    }
+    const code = Math.abs(hash % 900000) + 100000;
+    return code.toString();
+}
+
+// Отсчет секунд для индикатора
+function updateTimer() {
+    const now = new Date();
+    const secondsLeft = 60 - now.getSeconds();
+    document.getElementById('seconds-left').innerText = secondsLeft;
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+// Переключение шагов
+function goToStep(step) {
+    document.querySelectorAll('.step-page').forEach(page => page.classList.remove('active'));
+    document.getElementById(`step-${step}`).classList.add('active');
+
+    document.getElementById('bc-subject').className = step >= 1 ? 'active' : '';
+    document.getElementById('bc-class').className = step >= 2 ? 'active' : '';
+    document.getElementById('bc-pass').className = step >= 3 ? 'active' : '';
+    document.getElementById('bc-lessons').className = step >= 4 ? 'active' : '';
+}
+
+function selectSubject(subjectName, iconClass) {
+    selectedSubject = subjectName;
+    document.getElementById('bc-subject').innerHTML = `<i class="fa-solid ${iconClass}"></i> ${subjectName}`;
+    goToStep(2);
+}
+
+function selectClass(className) {
+    selectedClass = className;
+    document.getElementById('bc-class').innerHTML = `<i class="fa-solid fa-users"></i> ${className}`;
+    goToStep(3);
+}
+
+function verifyPassword() {
+    const inputVal = document.getElementById('pass-input').value.trim();
+    const validPassword = generateCurrentPassword();
+
+    if (inputVal === validPassword) {
+        document.getElementById('error-msg').style.display = 'none';
+        document.getElementById('pass-input').value = '';
+        loadLessons();
+        goToStep(4);
+    } else {
+        document.getElementById('error-msg').style.display = 'block';
+    }
+}
+
+// Отрисовка списка уроков из файла lessonsData.js
+function loadLessons() {
+    document.getElementById('lessons-heading').innerText = `${selectedSubject} — ${selectedClass}`;
+    const container = document.getElementById('lessons-container');
+    container.innerHTML = '';
+
+    // Получаем массив уроков из lessonsData.js
+    const list = getLessonsFor(selectedSubject, selectedClass);
+
+    list.forEach(lesson => {
+        const card = document.createElement('div');
+        card.className = 'lesson-card';
+        card.innerHTML = `
+            <div class="lesson-title"><i class="fa-solid fa-book-open"></i> ${lesson.title}</div>
+            <a href="${lesson.url}" target="_blank" class="lesson-btn">
+                Открыть задание <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+        `;
+        container.appendChild(card);
+    });
+}

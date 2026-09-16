@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель Учителя — Генератор Кода</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #0f172a;
+            color: #ffffff;
+            margin: 0;
+        }
+        .card {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+        }
+        h2 {
+            margin-top: 0;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .code {
+            font-size: 4rem;
+            font-family: 'Courier New', Courier, monospace;
+            color: #38bdf8;
+            letter-spacing: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .timer {
+            color: #f59e0b;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Текущий код для входа:</h2>
+        <div class="code" id="teacher-code">------</div>
+        <div class="timer">Обновление через: <span id="seconds">60</span> сек.</div>
+    </div>
+
+    <script>
+        // Секретный ключ (ДОЛЖЕН СОВПАДАТЬ с ключом в app.js)
+        const SECRET_SALT = "MySchoolSecretKey2026";
+
+        function updateTeacherCode() {
+            const now = new Date();
+            const minuteTimestamp = Math.floor(now.getTime() / 60000);
+            
+            const str = SECRET_SALT + minuteTimestamp;
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = (hash << 5) - hash + str.charCodeAt(i);
+                hash |= 0; 
+            }
+            const code = Math.abs(hash % 900000) + 100000;
+            
+            document.getElementById('teacher-code').innerText = code;
+            document.getElementById('seconds').innerText = 60 - now.getSeconds();
+        }
+
+        setInterval(updateTeacherCode, 1000);
+        updateTeacherCode();
+    </script>
+</body>
+</html>
