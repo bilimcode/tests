@@ -34,7 +34,9 @@ const lessonsData = {
             // ...
         ],
         "7 Класс": [
-            { id: 1, title: "Урок 1. Введение в Arduino и микроконтроллеры", url: "https://example.com/robot7-1" },
+            { id: 1, title: "Урок 1. в разработке", url: "https://example.com/robot7-1" },
+            { id: 1, title: "Урок 1. в разработке", url: "https://example.com/robot7-1" },
+            { id: 1, title: "Урок 1. Собери робота (образец)", url: "https://drive.google.com/file/d/1yRqFD2dJa5uBIOIiQfZAeJEfzYxHAjcU/view?usp=drive_link" },
             // ...
         ],
         "8 Класс": [
