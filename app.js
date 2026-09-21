@@ -4,12 +4,13 @@ const SECRET_SALT = "MySchoolSecretKey2026";
 let selectedSubject = '';
 let selectedClass = '';
 
-// Алгоритм генерации временного 6-значного кода на 60 секунд
+// Алгоритм генерации временного 6-значного кода на 1 ЧАС (60 минут)
 function generateCurrentPassword() {
     const now = new Date();
-    const minuteTimestamp = Math.floor(now.getTime() / 60000);
+    // Делим время в миллисекундах на количество миллисекунд в 1 часе (1000 * 60 * 60 = 3600000)
+    const hourTimestamp = Math.floor(now.getTime() / 3600000);
     
-    const str = SECRET_SALT + minuteTimestamp;
+    const str = SECRET_SALT + hourTimestamp;
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
         hash = (hash << 5) - hash + str.charCodeAt(i);
@@ -19,11 +20,21 @@ function generateCurrentPassword() {
     return code.toString();
 }
 
-// Отсчет секунд для индикатора
+// Отсчет времени до конца текущего часа (Минуты и Секунды)
 function updateTimer() {
     const now = new Date();
-    const secondsLeft = 60 - now.getSeconds();
-    document.getElementById('seconds-left').innerText = secondsLeft;
+    
+    const minutesLeft = 59 - now.getMinutes();
+    const secondsLeft = 59 - now.getSeconds();
+
+    // Форматируем с ведущими нулями (например, "05:09")
+    const formattedMinutes = String(minutesLeft).padStart(2, '0');
+    const formattedSeconds = String(secondsLeft).padStart(2, '0');
+
+    const timerElement = document.getElementById('seconds-left');
+    if (timerElement) {
+        timerElement.innerText = `${formattedMinutes}:${formattedSeconds}`;
+    }
 }
 setInterval(updateTimer, 1000);
 updateTimer();

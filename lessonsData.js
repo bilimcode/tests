@@ -3,19 +3,20 @@
 const lessonsData = {
     "Информатика": {
         "5 Класс": [
-            { id: 1, title: "Урок 1. Техника безопасности и правила поведения в кабинете", url: "https://example.com/info5-1" },
-            { id: 2, title: "Урок 2. Информация и информационные процессы", url: "https://example.com/info5-2" },
-            { id: 3, title: "Урок 3. Устройство компьютера и его основные блоки", url: "https://example.com/info5-3" },
+            { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info5-1" },
+            { id: 2, title: "Урок 2. В РАЗРАБОТКЕ", url: "https://example.com/info5-2" },
+            { id: 3, title: "Урок 3. В РАЗРАБОТКЕ", url: "https://example.com/info5-3" },
+            { id: 3, title: "Урок 3. История ЭВМ", url: "https://docs.google.com/forms/d/e/1FAIpQLSc6YnycVdmb9iZR7ehGa45nPQEW_14t2Fdwx0fSPTqbIV49MQ/viewform?usp=header" },
             // Добавьте остальные уроки до 34...
         ],
         "6 Класс": [
-            { id: 1, title: "Урок 1. Компьютерные сети и Интернет", url: "https://example.com/info6-1" },
-            { id: 2, title: "Урок 2. Безопасность в сети Интернет", url: "https://example.com/info6-2" },
+            { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info6-1" },
+            { id: 2, title: "Урок 2. В РАЗРАБОТКЕ", url: "https://example.com/info6-2" },
             { id: 3, title: "Урок 3. Устройство системного блока и память компьютера", url: "https://docs.google.com/forms/d/e/1FAIpQLSfmIBQjVxhMnSln23oPqc6jk7bII2BvGIsgSGXeDk7D6H4cvw/viewform?usp=sharing&ouid=107170903566991386372" },
             // ...
         ],
         "7 Класс": [
-            { id: 1, title: "Урок 1. Введение в программирование", url: "https://example.com/info7-1" },
+            { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info7-1" },
             // ...
         ],
         "8 Класс": [
