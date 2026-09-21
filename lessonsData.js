@@ -6,13 +6,13 @@ const lessonsData = {
             { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info5-1" },
             { id: 2, title: "Урок 2. В РАЗРАБОТКЕ", url: "https://example.com/info5-2" },
             { id: 3, title: "Урок 3. В РАЗРАБОТКЕ", url: "https://example.com/info5-3" },
-            { id: 3, title: "Урок 3. История ЭВМ", url: "https://docs.google.com/forms/d/e/1FAIpQLSc6YnycVdmb9iZR7ehGa45nPQEW_14t2Fdwx0fSPTqbIV49MQ/viewform?usp=header" },
+            { id: 3, title: "Урок 4. История ЭВМ", url: "https://docs.google.com/forms/d/e/1FAIpQLSc6YnycVdmb9iZR7ehGa45nPQEW_14t2Fdwx0fSPTqbIV49MQ/viewform?usp=header" },
             // Добавьте остальные уроки до 34...
         ],
         "6 Класс": [
             { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info6-1" },
             { id: 2, title: "Урок 2. В РАЗРАБОТКЕ", url: "https://example.com/info6-2" },
-            { id: 3, title: "Урок 3. Устройство системного блока и память компьютера", url: "https://docs.google.com/forms/d/e/1FAIpQLSfmIBQjVxhMnSln23oPqc6jk7bII2BvGIsgSGXeDk7D6H4cvw/viewform?usp=sharing&ouid=107170903566991386372" },
+            { id: 3, title: "Урок 3. Устройство системного блока и память компьютера", url: "https://forms.gle/b1Gy2G312awj6GC36" },
             // ...
         ],
         "7 Класс": [
