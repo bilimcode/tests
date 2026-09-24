@@ -13,6 +13,7 @@ const lessonsData = {
             { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info6-1" },
             { id: 2, title: "Урок 2. В РАЗРАБОТКЕ", url: "https://example.com/info6-2" },
             { id: 3, title: "Урок 3. Устройство системного блока и память компьютера", url: "https://forms.gle/b1Gy2G312awj6GC36" },
+            { id: 4, title: "Урок 4. Устройство системного блока и память компьютера. Практикум", url: "https://docs.google.com/forms/d/e/1FAIpQLSdFIdtHqAPwHSKTTprdYLlf64WvBeBclLcUcagEH1yCqLjVyA/viewform?usp=header" },
             // ...
         ],
         "7 Класс": [
