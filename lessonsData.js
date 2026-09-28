@@ -3,25 +3,29 @@
 const lessonsData = {
     "Информатика": {
         "5 Класс": [
-            { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info5-1" },
-            { id: 2, title: "Урок 2. В РАЗРАБОТКЕ", url: "https://example.com/info5-2" },
-            { id: 3, title: "Урок 3. В РАЗРАБОТКЕ", url: "https://example.com/info5-3" },
-            { id: 3, title: "Урок 4. История ЭВМ", url: "https://docs.google.com/forms/d/e/1FAIpQLSc6YnycVdmb9iZR7ehGa45nPQEW_14t2Fdwx0fSPTqbIV49MQ/viewform?usp=header" },
+            { id: 1, title: "Урок 1. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-1" },
+            { id: 2, title: "Урок 2. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-2" },
+            { id: 3, title: "Урок 3. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-3" },
+            { id: 4, title: "Урок 4. История ЭВМ", url: "https://docs.google.com/forms/d/e/1FAIpQLSc6YnycVdmb9iZR7ehGa45nPQEW_14t2Fdwx0fSPTqbIV49MQ/viewform?usp=header" },
             // Добавьте остальные уроки до 34...
         ],
         "6 Класс": [
-            { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info6-1" },
-            { id: 2, title: "Урок 2. В РАЗРАБОТКЕ", url: "https://example.com/info6-2" },
+            { id: 1, title: "Урок 1. НЕТ ЗАДАНИЯ", url: "https://example.com/info6-1" },
+            { id: 2, title: "Урок 2. НЕТ ЗАДАНИЯ", url: "https://example.com/info6-2" },
             { id: 3, title: "Урок 3. Устройство системного блока и память компьютера", url: "https://forms.gle/b1Gy2G312awj6GC36" },
             { id: 4, title: "Урок 4. Устройство системного блока и память компьютера. Практикум", url: "https://docs.google.com/forms/d/e/1FAIpQLSdFIdtHqAPwHSKTTprdYLlf64WvBeBclLcUcagEH1yCqLjVyA/viewform?usp=header" },
             // ...
         ],
         "7 Класс": [
-            { id: 1, title: "Урок 1. В РАЗРАБОТКЕ", url: "https://example.com/info7-1" },
+            { id: 1, title: "Урок 1. НЕТ ЗАДАНИЯ", url: "https://example.com/info7-1" },
             // ...
         ],
         "8 Класс": [
-            { id: 1, title: "Урок 1. Структура данных и алгоритмы", url: "https://example.com/info8-1" },
+            { id: 1, title: "Урок 1. НЕТ ЗАДАНИЯ", url: "https://example.com/info8-1" },
+            { id: 2, title: "Урок 2. НЕТ ЗАДАНИЯ", url: "https://example.com/info8-1" },
+            { id: 3, title: "Урок 3. НЕТ ЗАДАНИЯ", url: "https://example.com/info8-1" },
+            { id: 4, title: "Урок 4. НЕТ ЗАДАНИЯ", url: "https://example.com/info8-1" },
+            { id: 5, title: "Урок 5. Работа с циклом for. Эффект «Бегущий огонь»", url: "https://drive.google.com/file/d/1hcVG_FeCYtH05cH4tf9q00wGG8_JpAK0/view?usp=drive_link" },
             // ...
         ]
     },
