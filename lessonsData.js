@@ -7,6 +7,10 @@ const lessonsData = {
             { id: 2, title: "Урок 2. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-2" },
             { id: 3, title: "Урок 3. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-3" },
             { id: 4, title: "Урок 4. История ЭВМ", url: "https://docs.google.com/forms/d/e/1FAIpQLSc6YnycVdmb9iZR7ehGa45nPQEW_14t2Fdwx0fSPTqbIV49MQ/viewform?usp=header" },
+            { id: 5, title: "Урок 5. ПО и ИИ", url: "https://docs.google.com/forms/d/e/1FAIpQLScjLiQP1K8iTg_bTrFqkeLSBzBlRCL-tw5qwG9dDIvfukGIAg/viewform?usp=header" },
+            { id: 6, title: "Урок 6. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-3" },
+            { id: 7, title: "Урок 7. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-3" },
+            { id: 8, title: "Урок 8. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-3" },
             // Добавьте остальные уроки до 34...
         ],
         "6 Класс": [
