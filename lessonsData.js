@@ -42,9 +42,9 @@ const lessonsData = {
         "6 Класс": [
             { id: 1, title: "Урок 1. НЕТ ЗАДАНИЯ", url: "https://example.com/info6-1" },
             { id: 2, title: "Урок 2. НЕТ ЗАДАНИЯ", url: "https://example.com/info6-2" },
-            { id: 3, title: "Урок 3. Устройство системного блока и память компьютера", url: "https://forms.gle/b1Gy2G312awj6GC36" },
-            { id: 4, title: "Урок 4. Устройство системного блока и память компьютера. Практикум", url: "https://docs.google.com/forms/d/e/1FAIpQLSdFIdtHqAPwHSKTTprdYLlf64WvBeBclLcUcagEH1yCqLjVyA/viewform?usp=header" },
-            { id: 5, title: "Урок 5. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
+            { id: 3, title: "Урок 3. Системный блок и память", url: "https://forms.gle/b1Gy2G312awj6GC36" },
+            { id: 4, title: "Урок 4. Системный блок и память. Практикум", url: "https://docs.google.com/forms/d/e/1FAIpQLSdFIdtHqAPwHSKTTprdYLlf64WvBeBclLcUcagEH1yCqLjVyA/viewform?usp=header" },
+            { id: 5, title: "Урок 5. Файловая система", url: "https://docs.google.com/forms/d/e/1FAIpQLSc4erjFynGwAdUHLnWFAeETYb6lz_Lx2VPaf148RS4KkcGM5A/viewform?usp=header" },
             { id: 6, title: "Урок 6. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 7, title: "Урок 7. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 8, title: "Урок 8. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
