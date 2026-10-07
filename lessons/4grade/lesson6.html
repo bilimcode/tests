@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Рабочий лист: Планирование моей игры</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Nunito & Rubik -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Rubik:wght@700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f0fdf4;
+      color: #1e293b;
+    }
+    h1, h2, h3 {
+      font-family: 'Rubik', sans-serif;
+    }
+    .card-border {
+      border: 3px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+    .card-border:focus-within {
+      border-color: #6366f1;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+    }
+    input[type="text"], textarea, select {
+      width: 100%;
+      background-color: #f8fafc;
+      border: 2px solid #cbd5e1;
+      border-radius: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      font-weight: 700;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus {
+      border-color: #6366f1;
+      background-color: #ffffff;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+      }
+      .page-container {
+        max-width: 100% !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .card-box {
+        border: 2px solid #94a3b8 !important;
+        break-inside: avoid;
+      }
+      input[type="text"], textarea, select {
+        border: 1px solid #cbd5e1 !important;
+        background: transparent !important;
+      }
+    }
+  </style>
+</head>
+<body class="p-4 sm:p-8 min-h-screen">
+
+  <div class="max-w-4xl mx-auto bg-white rounded-3xl p-6 sm:p-10 shadow-xl border-4 border-indigo-100 page-container">
+    
+    <!-- Кнопки управления (не печатаются) -->
+    <div class="no-print flex flex-wrap justify-between items-center gap-3 mb-8 bg-indigo-50 p-4 rounded-2xl border border-indigo-100">
+      <div class="flex items-center gap-2 text-indigo-900 font-extrabold text-sm sm:text-base">
+        <i class="fa-solid fa-gamepad text-indigo-600 text-xl"></i>
+        <span>Рабочий лист геймдизайнера</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="saveData()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-floppy-disk"></i> Сохранить
+        </button>
+        <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-print"></i> Печать / PDF
+        </button>
+        <button onclick="clearData()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-black text-sm px-3 py-2.5 rounded-xl transition flex items-center gap-1">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Заголовок -->
+    <header class="text-center mb-8 pb-6 border-b-2 border-dashed border-slate-200">
+      <div class="inline-block bg-amber-100 text-amber-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full mb-3 uppercase tracking-wider">
+        <i class="fa-solid fa-lightbulb mr-1"></i> Концепт новой игры
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 mb-2">
+        Паспорт Моей Игры <i class="fa-solid fa-rocket text-indigo-600"></i>
+      </h1>
+      <p class="text-slate-500 font-bold text-sm sm:text-lg">
+        Спланируй правила, персонажей и сюжет перед созданием!
+      </p>
+    </header>
+
+    <form id="gameForm" class="space-y-8" onsubmit="event.preventDefault();">
+
+      <!-- Блок 1: Базовая информация -->
+      <section class="bg-slate-50 rounded-2xl p-5 sm:p-6 card-box card-border">
+        <h2 class="text-xl font-black text-indigo-950 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-sm">1</span>
+          Основная Идея
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-black uppercase text-slate-500 mb-1">Название игры:</label>
+            <input type="text" id="gameTitle" placeholder="Например: Супер-Кот и Затерянный Космос">
+          </div>
+          <div>
+            <label class="block text-xs font-black uppercase text-slate-500 mb-1">Жанр игры:</label>
+            <select id="gameGenre">
+              <option value="Платформер">Платформер (бегай и прыгай)</option>
+              <option value="Головоломка">Головоломка / Пазл</option>
+              <option value="Квест / Приключение">Квест / Приключение</option>
+              <option value="Аркада / Гонки">Аркада / Гонки</option>
+              <option value="Настольная / Словесная">Настольная / Бумажная игра</option>
+              <option value="Другое">Другой жанр</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-black uppercase text-slate-500 mb-1">Формат / Платформа:</label>
+            <input type="text" id="gamePlatform" placeholder="ПК, Телефон, Scratch, Бумага...">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-black uppercase text-slate-500 mb-1">Главный слоган / Идея игры в одном предложении:</label>
+            <input type="text" id="gameTagline" placeholder="Спаси планету от космических мышей за 3 минуты!">
+          </div>
+        </div>
+      </section>
+
+      <!-- Блок 2: Герой и Враг -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        
+        <!-- Герой -->
+        <div class="bg-emerald-50/60 rounded-2xl p-5 card-box card-border">
+          <h2 class="text-lg font-black text-emerald-950 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-user-ninja text-emerald-600"></i> Главный Герой
+          </h2>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-black uppercase text-slate-500 mb-1">Имя персонажа:</label>
+              <input type="text" id="heroName" placeholder="Космо-Барсик">
+            </div>
+            <div>
+              <label class="block text-xs font-black uppercase text-slate-500 mb-1">Суперспособности / Навыки:</label>
+              <textarea id="heroAbilities" placeholder="Высоко прыгает, умеет включать защитный щит..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Препятствие / Враг -->
+        <div class="bg-rose-50/60 rounded-2xl p-5 card-box card-border">
+          <h2 class="text-lg font-black text-rose-950 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-dragon text-rose-600"></i> Враг / Препятствие
+          </h2>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-black uppercase text-slate-500 mb-1">Кто мешает герою?</label>
+              <input type="text" id="enemyName" placeholder="Робо-Мыши и Летучие Астероиды">
+            </div>
+            <div>
+              <label class="block text-xs font-black uppercase text-slate-500 mb-1">Опасности и ловушки:</label>
+              <textarea id="enemyHazards" placeholder="Шипы, исчезающие платформы, таймер обратного отсчета..."></textarea>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Блок 3: Правила и Механики -->
+      <section class="bg-slate-50 rounded-2xl p-5 sm:p-6 card-box card-border">
+        <h2 class="text-xl font-black text-indigo-950 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-sm">2</span>
+          Геймплей и Алгоритмы
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-black uppercase text-slate-500 mb-1">🏆 Как ПОБЕДИТЬ (Условие победы):</label>
+            <textarea id="winCondition" placeholder="Собрать 10 золотых звёзд и дойти до портала..."></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-black uppercase text-slate-500 mb-1">💥 Как ПРОИГРАТЬ (Условие проигрыша):</label>
+            <textarea id="loseCondition" placeholder="Потерять 3 жизни или не успеть до окончания времени..."></textarea>
+          </div>
+        </div>
+
+        <div class="mt-4 bg-amber-50 p-4 rounded-xl border border-amber-200">
+          <label class="block text-xs font-black uppercase text-amber-900 mb-1">
+            <i class="fa-solid fa-code-branch mr-1"></i> Правило ветвления (ЕСЛИ — ТО — ИНАЧЕ):
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-2">
+            <div>
+              <span class="text-xs font-black text-amber-800">ЕСЛИ (условие):</span>
+              <input type="text" id="ruleIf" placeholder="Герой касается звезды" class="text-xs">
+            </div>
+            <div>
+              <span class="text-xs font-black text-emerald-800">ТО (действие):</span>
+              <input type="text" id="ruleThen" placeholder="+100 очков и звук победы" class="text-xs">
+            </div>
+            <div>
+              <span class="text-xs font-black text-rose-800">ИНАЧЕ:</span>
+              <input type="text" id="ruleElse" placeholder="Ничего не происходит" class="text-xs">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Блок 4: Дизайн уровней -->
+      <section class="bg-slate-50 rounded-2xl p-5 sm:p-6 card-box card-border">
+        <h2 class="text-xl font-black text-indigo-950 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-sm">3</span>
+          Прогрессия Уровней
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white p-3 rounded-xl border border-slate-200">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-black px-2 py-0.5 rounded block w-max mb-2">УРОВЕНЬ 1: Обучение</span>
+            <textarea id="level1" placeholder="Лёгкий уровень. Игрок учится ходить и собирать бонусы." class="text-xs"></textarea>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-slate-200">
+            <span class="bg-purple-100 text-purple-800 text-xs font-black px-2 py-0.5 rounded block w-max mb-2">УРОВЕНЬ 2: Усложнение</span>
+            <textarea id="level2" placeholder="Появляются двигающиеся враги и ловушки." class="text-xs"></textarea>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-slate-200">
+            <span class="bg-rose-100 text-rose-800 text-xs font-black px-2 py-0.5 rounded block w-max mb-2">УРОВЕНЬ 3: Финал / Босс</span>
+            <textarea id="level3" placeholder="Главное испытание! Быстрый босс и сокровище." class="text-xs"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Блок 5: Визуал и Звук -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="bg-cyan-50/60 rounded-2xl p-5 card-box card-border">
+          <h2 class="text-lg font-black text-cyan-950 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-palette text-cyan-600"></i> Графика и Графический Стиль
+          </h2>
+          <textarea id="artStyle" placeholder="Пиксель-арт, нарисованные от руки рисунки, 3D кубики, эмодзи..."></textarea>
+        </div>
+
+        <div class="bg-violet-50/60 rounded-2xl p-5 card-box card-border">
+          <h2 class="text-lg font-black text-violet-950 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-music text-violet-600"></i> Звуки и Атмосфера
+          </h2>
+          <textarea id="audioStyle" placeholder="Веселая 8-битная музыка, звуки прыжков, победный фанфар..."></textarea>
+        </div>
+      </section>
+
+      <!-- Блок 6: Чек-лист готовности -->
+      <section class="bg-emerald-50/40 rounded-2xl p-5 sm:p-6 card-box card-border">
+        <h2 class="text-lg font-black text-emerald-950 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-emerald-600"></i> Чек-лист готовности проекта
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-bold text-slate-700">
+          <label class="flex items-center gap-2 cursor-pointer bg-white p-2.5 rounded-xl border border-slate-200">
+            <input type="checkbox" id="check1" class="w-4 h-4 accent-emerald-600">
+            <span>Придумано имя и сюжет</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer bg-white p-2.5 rounded-xl border border-slate-200">
+            <input type="checkbox" id="check2" class="w-4 h-4 accent-emerald-600">
+            <span>Нарисован скетч главного героя</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer bg-white p-2.5 rounded-xl border border-slate-200">
+            <input type="checkbox" id="check3" class="w-4 h-4 accent-emerald-600">
+            <span>Описаны правила победы и поражения</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer bg-white p-2.5 rounded-xl border border-slate-200">
+            <input type="checkbox" id="check4" class="w-4 h-4 accent-emerald-600">
+            <span>Протестирован Первый Уровень с друзьями</span>
+          </label>
+        </div>
+      </section>
+
+    </form>
+
+    <!-- Футер -->
+    <footer class="mt-8 text-center text-xs font-extrabold text-slate-400 border-t border-slate-200 pt-4">
+      Рабочий лист разработчика игр • Создано для уроков информатики и геймдизайна
+    </footer>
+
+  </div>
+
+  <script>
+    const formFields = [
+      'gameTitle', 'gameGenre', 'gamePlatform', 'gameTagline',
+      'heroName', 'heroAbilities', 'enemyName', 'enemyHazards',
+      'winCondition', 'loseCondition', 'ruleIf', 'ruleThen', 'ruleElse',
+      'level1', 'level2', 'level3', 'artStyle', 'audioStyle',
+      'check1', 'check2', 'check3', 'check4'
+    ];
+
+    // Автосохранение при вводе
+    document.getElementById('gameForm').addEventListener('input', () => {
+      saveData(false);
+    });
+
+    function saveData(showAlert = true) {
+      const data = {};
+      formFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          data[id] = el.type === 'checkbox' ? el.checked : el.value;
+        }
+      });
+      localStorage.setItem('game_worksheet_data', JSON.stringify(data));
+      if (showAlert) {
+        alert('Данные игры успешно сохранены!');
+      }
+    }
+
+    function loadData() {
+      const saved = localStorage.getItem('game_worksheet_data');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          formFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && data[id] !== undefined) {
+              if (el.type === 'checkbox') {
+                el.checked = data[id];
+              } else {
+                el.value = data[id];
+              }
+            }
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    function clearData() {
+      if (confirm('Очистить весь рабочий лист?')) {
+        localStorage.removeItem('game_worksheet_data');
+        document.getElementById('gameForm').reset();
+      }
+    }
+
+    // Загрузка сохраненных данных при старте
+    window.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>
