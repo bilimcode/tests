@@ -76,20 +76,21 @@ function verifyPassword() {
     }
 }
 
-// Отрисовка списка уроков из файла lessonsData.js[cite: 2]
+// Отрисовка списка уроков из файла lessonsData.js
 function loadLessons() {
     document.getElementById('lessons-heading').innerText = `${selectedSubject} — ${selectedClass}`;
     const container = document.getElementById('lessons-container');
     container.innerHTML = '';
 
-    // Получаем массив уроков из lessonsData.js[cite: 2]
+    // Получаем массив уроков из lessonsData.js
     const list = getLessonsFor(selectedSubject, selectedClass);
 
     list.forEach(lesson => {
         const card = document.createElement('div');
         card.className = 'lesson-card';
         
-        const isSor6 = (selectedClass == 6 || selectedClass == '6') && lesson.id === 7;
+        // Проверяем, что это 6 класс и СОР (урок №7)
+        const isSor6 = String(selectedClass).includes('6') && lesson.id === 7;
 
         if (isSor6) {
             card.innerHTML = `
@@ -99,7 +100,7 @@ function loadLessons() {
                 </button>
             `;
             
-            // Безопасный перехват клика без ломающих кавычек и сброса шагов
+            // Безопасный перехват клика по кнопке СОР
             const btn = card.querySelector('.sor-action-btn');
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
