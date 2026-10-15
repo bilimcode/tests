@@ -90,9 +90,10 @@ function loadLessons() {
         card.className = 'lesson-card';
         card.innerHTML = `
             <div class="lesson-title"><i class="fa-solid fa-book-open"></i> ${lesson.title}</div>
-            <a href="${lesson.id === 7 ? '#' : lesson.url}" 
+            <a href="${(selectedClass == 6 || selectedClass == '6') && lesson.id === 7 ? '#' : lesson.url}" 
+               target="_blank" 
                class="lesson-btn"
-               ${lesson.id === 7 ? `onclick="
+               ${(selectedClass == 6 || selectedClass == '6') && lesson.id === 7 ? `onclick="
                  event.preventDefault();
                  var f = [
                    'https://forms.gle/qhFHbqBBfK9FgVsi7',
