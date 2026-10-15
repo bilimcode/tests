@@ -90,7 +90,24 @@ function loadLessons() {
         card.className = 'lesson-card';
         card.innerHTML = `
             <div class="lesson-title"><i class="fa-solid fa-book-open"></i> ${lesson.title}</div>
-            <a href="${lesson.url}" target="_blank" class="lesson-btn">
+            <a href="${lesson.id === 7 ? '#' : lesson.url}" 
+               class="lesson-btn"
+               ${lesson.id === 7 ? `onclick="
+                 event.preventDefault();
+                 var f = [
+                   'https://forms.gle/qhFHbqBBfK9FgVsi7',
+                   'https://forms.gle/CbP22ZSttDGz5snHA',
+                   'https://forms.gle/TWWC5ai7mqn6CzrN6'
+                 ];
+                 var p = localStorage.getItem('pc_no');
+                 while(!p || isNaN(p) || p < 1 || p > 24) {
+                   p = prompt('Введите номер вашего компьютера (от 1 до 24):');
+                   if(p === null) return;
+                 }
+                 localStorage.setItem('pc_no', p.trim());
+                 var index = (parseInt(p) - 1) % f.length;
+                 window.location.href = f[index];
+               "` : ''}>
                 Открыть задание <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </a>
         `;

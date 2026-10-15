@@ -83,7 +83,7 @@ const lessonsData = {
             { id: 4, title: "Урок 4. Системный блок и память. Практикум", url: "https://docs.google.com/forms/d/e/1FAIpQLSdFIdtHqAPwHSKTTprdYLlf64WvBeBclLcUcagEH1yCqLjVyA/viewform?usp=header" },
             { id: 5, title: "Урок 5. Файловая система", url: "https://docs.google.com/forms/d/e/1FAIpQLSc4erjFynGwAdUHLnWFAeETYb6lz_Lx2VPaf148RS4KkcGM5A/viewform?usp=header" },
             { id: 6, title: "Урок 6. Практикум. Файловая система", url: "https://forms.gle/zMEPc7J2r4mWsZWo7" },
-            { id: 7, title: "Урок 7. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
+            { id: 7, title: "Урок 7. СОР №1", url: "#" },
             { id: 8, title: "Урок 8. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 9, title: "Урок 9. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 10, title: "Урок 10. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
