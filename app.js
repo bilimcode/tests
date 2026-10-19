@@ -25,9 +25,9 @@ const MULTI_FORM_LESSONS = {
     ],
     
     "5 Класс_7": [
-        // У вас сейчас 1 форма, она будет открываться напрямую. 
-        // Если добавите вторую, включится авто-распределение по ПК!
-        'https://docs.google.com/forms/d/e/1FAIpQLSe0SG9XSA3atSjmzSxIQEpkLaX438C8swtrRF943loL1L7gdw/viewform?usp=header'
+        'https://forms.gle/sHtMLWSe6PqvdEeGA',
+        'https://forms.gle/HDoTYvLLjvRbnNEy6',
+        'https://forms.gle/PudgMmAbyh147hHy6'
     ],
     "5 Класс_15": [
         // 'ссылка_1', 'ссылка_2'
