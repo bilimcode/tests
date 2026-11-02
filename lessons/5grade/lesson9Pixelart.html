@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Studio: RGB & CMYK</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+        /* Canvas transparent grid background */
+        .checkerboard-bg {
+            background-color: #ffffff;
+            background-image: linear-gradient(45deg, #e5e7eb 25%, transparent 25%), linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e7eb 75%), linear-gradient(-45deg, transparent 75%, #e5e7eb 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+        /* Custom Range Slider styling */
+        input[type=range] {
+            accent-color: #6366f1;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col h-screen overflow-hidden">
+
+    <!-- Top Header -->
+    <header class="bg-gray-800 border-b border-gray-700 px-4 py-2.5 flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-3">
+            <div class="bg-indigo-600 p-2 rounded-lg text-white">
+                <i data-lucide="palette" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg leading-tight flex items-center gap-2">
+                    Pixel Art Studio 
+                    <span class="text-xs bg-indigo-900/60 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded-full font-mono">RGB & CMYK Edition</span>
+                </h1>
+                <p class="text-xs text-gray-400">Образовательная лаборатория цветовых моделей</p>
+            </div>
+        </div>
+
+        <!-- Canvas Controls Header -->
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center bg-gray-900 border border-gray-700 rounded-lg p-1 text-xs">
+                <span class="px-2 text-gray-400 font-medium">Размер:</span>
+                <button onclick="setGridSize(8)" id="size-8" class="px-2.5 py-1 rounded-md transition font-mono font-semibold">8x8</button>
+                <button onclick="setGridSize(16)" id="size-16" class="px-2.5 py-1 rounded-md transition font-mono font-semibold">16x16</button>
+                <button onclick="setGridSize(32)" id="size-32" class="px-2.5 py-1 rounded-md transition font-mono font-semibold">32x32</button>
+            </div>
+
+            <button onclick="toggleGrid()" id="btn-grid" class="flex items-center space-x-1 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs font-medium transition border border-gray-600">
+                <i data-lucide="grid" class="w-4 h-4"></i>
+                <span>Сетка</span>
+            </button>
+
+            <button onclick="clearCanvasPrompt()" class="flex items-center space-x-1 px-3 py-1.5 bg-red-900/40 hover:bg-red-800/60 text-red-300 rounded-lg text-xs font-medium transition border border-red-700/50">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                <span>Очистить</span>
+            </button>
+            
+            <button onclick="openModal('info-modal')" class="p-1.5 bg-gray-700 hover:bg-gray-600 text-yellow-400 rounded-lg transition border border-gray-600" title="Справка о цветах">
+                <i data-lucide="help-circle" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Export Actions -->
+        <div class="flex items-center space-x-2">
+            <button onclick="exportPNG()" class="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-md transition">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Скачать PNG</span>
+            </button>
+            <button onclick="saveProject()" class="flex items-center space-x-1 px-2.5 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs font-medium transition border border-gray-600" title="Сохранить JSON">
+                <i data-lucide="file-json" class="w-4 h-4"></i>
+            </button>
+            <label class="flex items-center space-x-1 px-2.5 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs font-medium transition border border-gray-600 cursor-pointer" title="Загрузить JSON">
+                <i data-lucide="upload" class="w-4 h-4"></i>
+                <input type="file" id="json-input" accept=".json" class="hidden" onchange="loadProject(event)">
+            </label>
+            <button onclick="openGallery()" class="flex items-center space-x-1 px-3 py-1.5 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/30 rounded-lg text-xs font-medium transition">
+                <i data-lucide="archive" class="w-4 h-4"></i>
+                <span>Галерея</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Sidebar: Tools & Palette -->
+        <aside class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col p-4 shrink-0 space-y-5 overflow-y-auto">
+            
+            <!-- Tools Section -->
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2.5">Инструменты</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="tool-pencil" onclick="setTool('pencil')" class="tool-btn flex items-center space-x-2 p-2 rounded-lg border text-sm font-medium transition">
+                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                        <span>Кисть</span>
+                    </button>
+                    <button id="tool-bucket" onclick="setTool('bucket')" class="tool-btn flex items-center space-x-2 p-2 rounded-lg border text-sm font-medium transition">
+                        <i data-lucide="paint-bucket" class="w-4 h-4"></i>
+                        <span>Заливка</span>
+                    </button>
+                    <button id="tool-picker" onclick="setTool('picker')" class="tool-btn flex items-center space-x-2 p-2 rounded-lg border text-sm font-medium transition">
+                        <i data-lucide="pipette" class="w-4 h-4"></i>
+                        <span>Пипетка</span>
+                    </button>
+                    <button id="tool-eraser" onclick="setTool('eraser')" class="tool-btn flex items-center space-x-2 p-2 rounded-lg border text-sm font-medium transition">
+                        <i data-lucide="eraser" class="w-4 h-4"></i>
+                        <span>Ластик</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Color Preview Box -->
+            <div class="bg-gray-900 border border-gray-700 p-3 rounded-xl flex items-center space-x-3">
+                <div id="color-preview" class="w-12 h-12 rounded-lg border-2 border-white/20 shadow-inner shrink-0 transition-colors duration-150" style="background-color: #4f46e5;"></div>
+                <div class="overflow-hidden">
+                    <span class="text-xs text-gray-400 block font-medium">Выбранный цвет:</span>
+                    <span id="hex-display" class="font-mono text-sm font-bold tracking-wider text-white">#4F46E5</span>
+                    <span id="rgb-quick-display" class="font-mono text-[10px] text-gray-400 block">rgb(79, 70, 229)</span>
+                </div>
+            </div>
+
+            <!-- Palette History -->
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">История цветов</h3>
+                    <span class="text-[10px] text-gray-500">До 10 цветов</span>
+                </div>
+                <div id="palette-history" class="grid grid-cols-5 gap-1.5 bg-gray-900/50 p-2 rounded-lg border border-gray-700/50 min-h-[44px]">
+                    <!-- Dynamic Swatches -->
+                </div>
+            </div>
+
+            <!-- Quick Presets -->
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Базовые цвета</h3>
+                <div class="grid grid-cols-6 gap-1.5">
+                    <button onclick="setColorFromHex('#000000')" class="w-full aspect-square rounded border border-gray-600 bg-black hover:scale-105 transition" title="Черный"></button>
+                    <button onclick="setColorFromHex('#FFFFFF')" class="w-full aspect-square rounded border border-gray-600 bg-white hover:scale-105 transition" title="Белый"></button>
+                    <button onclick="setColorFromHex('#FF0000')" class="w-full aspect-square rounded border border-gray-600 bg-red-600 hover:scale-105 transition" title="Красный (R)"></button>
+                    <button onclick="setColorFromHex('#00FF00')" class="w-full aspect-square rounded border border-gray-600 bg-green-500 hover:scale-105 transition" title="Зеленый (G)"></button>
+                    <button onclick="setColorFromHex('#0000FF')" class="w-full aspect-square rounded border border-gray-600 bg-blue-600 hover:scale-105 transition" title="Синий (B)"></button>
+                    <button onclick="setColorFromHex('#00FFFF')" class="w-full aspect-square rounded border border-gray-600 bg-cyan-400 hover:scale-105 transition" title="Голубой (C)"></button>
+                    <button onclick="setColorFromHex('#FF00FF')" class="w-full aspect-square rounded border border-gray-600 bg-magenta-500 hover:scale-105 transition" style="background-color: #ff00ff" title="Пурпурный (M)"></button>
+                    <button onclick="setColorFromHex('#FFFF00')" class="w-full aspect-square rounded border border-gray-600 bg-yellow-400 hover:scale-105 transition" title="Желтый (Y)"></button>
+                    <button onclick="setColorFromHex('#F97316')" class="w-full aspect-square rounded border border-gray-600 bg-orange-500 hover:scale-105 transition" title="Оранжевый"></button>
+                    <button onclick="setColorFromHex('#8B5CF6')" class="w-full aspect-square rounded border border-gray-600 bg-purple-500 hover:scale-105 transition" title="Фиолетовый"></button>
+                    <button onclick="setColorFromHex('#EC4899')" class="w-full aspect-square rounded border border-gray-600 bg-pink-500 hover:scale-105 transition" title="Розовый"></button>
+                    <button onclick="setColorFromHex('#78350F')" class="w-full aspect-square rounded border border-gray-600 bg-amber-900 hover:scale-105 transition" title="Коричневый"></button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center Workspace: Canvas Area -->
+        <main class="flex-1 bg-gray-950 flex flex-col relative overflow-hidden items-center justify-center p-4">
+            
+            <!-- Canvas Toolbar / Coordinates -->
+            <div class="absolute top-4 left-4 bg-gray-800/80 backdrop-blur border border-gray-700/80 rounded-lg px-3 py-1.5 flex items-center space-x-4 text-xs font-mono z-10">
+                <div>X: <span id="coord-x" class="text-indigo-400">-</span></div>
+                <div>Y: <span id="coord-y" class="text-indigo-400">-</span></div>
+                <div class="h-3 w-[1px] bg-gray-600"></div>
+                <div>Масштаб: <span id="zoom-level" class="text-gray-300">100%</span></div>
+            </div>
+
+            <!-- Zoom Controls Floating -->
+            <div class="absolute top-4 right-4 bg-gray-800/80 backdrop-blur border border-gray-700/80 rounded-lg p-1 flex space-x-1 z-10">
+                <button onclick="adjustZoom(-0.2)" class="p-1.5 hover:bg-gray-700 rounded transition" title="Уменьшить">
+                    <i data-lucide="zoom-out" class="w-4 h-4"></i>
+                </button>
+                <button onclick="resetZoom()" class="px-2 py-1 hover:bg-gray-700 rounded text-xs font-mono font-semibold transition" title="Сбросить масштаб">100%</button>
+                <button onclick="adjustZoom(0.2)" class="p-1.5 hover:bg-gray-700 rounded transition" title="Увеличить">
+                    <i data-lucide="zoom-in" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Canvas Container with Axis Headers -->
+            <div id="canvas-scroll-container" class="w-full h-full flex items-center justify-center overflow-auto p-8">
+                <div id="canvas-wrapper" class="relative flex flex-col items-start transition-transform duration-75 origin-center">
+                    
+                    <!-- X Axis Labels Container -->
+                    <div id="x-axis" class="flex ml-6 mb-1 text-[10px] font-mono text-gray-500 select-none"></div>
+
+                    <div class="flex">
+                        <!-- Y Axis Labels Container -->
+                        <div id="y-axis" class="flex flex-col mr-1 text-[10px] font-mono text-gray-500 select-none justify-around"></div>
+
+                        <!-- Main Drawing Canvas -->
+                        <div class="relative checkerboard-bg border-2 border-gray-600 shadow-2xl rounded-sm overflow-hidden">
+                            <canvas id="pixel-canvas" class="cursor-crosshair block"></canvas>
+                            <!-- Grid Overlay Canvas -->
+                            <canvas id="grid-canvas" class="absolute top-0 left-0 pointer-events-none"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-3 text-center text-[11px] text-gray-500 pointer-events-none">
+                Зажмите левую кнопку мыши для рисования | Сетка и координаты помогают в точности
+            </div>
+        </main>
+
+        <!-- Right Sidebar: Color Models Lab (RGB / CMYK) -->
+        <aside class="w-80 bg-gray-800 border-l border-gray-700 flex flex-col p-4 shrink-0 overflow-y-auto space-y-6">
+            
+            <div>
+                <div class="flex items-center justify-between mb-1">
+                    <h2 class="text-sm font-bold text-gray-200 uppercase tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="sliders" class="w-4 h-4 text-indigo-400"></i>
+                        Лаборатория Цвета
+                    </h2>
+                </div>
+                <p class="text-xs text-gray-400">Изменяйте параметры, чтобы увидеть синхронизацию двух цветовых моделей.</p>
+            </div>
+
+            <!-- RGB Model Card -->
+            <div class="bg-gray-900 border border-gray-700/80 rounded-xl p-4 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 px-2 py-0.5 bg-red-950/60 border-b border-l border-red-800/40 text-[10px] font-mono text-red-300 rounded-bl">
+                    Аддитивная модель (Экраны)
+                </div>
+                
+                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider mb-3 flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span>
+                    RGB (Red, Green, Blue)
+                </h3>
+
+                <!-- R Slider -->
+                <div class="space-y-1 mb-3">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-red-400 font-semibold">R (Красный):</span>
+                        <span id="rgb-r-val" class="text-gray-200">79</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="range" id="rgb-r" min="0" max="255" value="79" oninput="updateFromRGB()" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        <input type="number" id="rgb-r-num" min="0" max="255" value="79" onchange="syncRGBInput('r')" class="w-14 bg-gray-800 border border-gray-700 rounded px-1.5 py-0.5 text-xs text-center font-mono">
+                    </div>
+                </div>
+
+                <!-- G Slider -->
+                <div class="space-y-1 mb-3">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-green-400 font-semibold">G (Зеленый):</span>
+                        <span id="rgb-g-val" class="text-gray-200">70</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="range" id="rgb-g" min="0" max="255" value="70" oninput="updateFromRGB()" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        <input type="number" id="rgb-g-num" min="0" max="255" value="70" onchange="syncRGBInput('g')" class="w-14 bg-gray-800 border border-gray-700 rounded px-1.5 py-0.5 text-xs text-center font-mono">
+                    </div>
+                </div>
+
+                <!-- B Slider -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-blue-400 font-semibold">B (Синий):</span>
+                        <span id="rgb-b-val" class="text-gray-200">229</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="range" id="rgb-b" min="0" max="255" value="229" oninput="updateFromRGB()" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        <input type="number" id="rgb-b-num" min="0" max="255" value="229" onchange="syncRGBInput('b')" class="w-14 bg-gray-800 border border-gray-700 rounded px-1.5 py-0.5 text-xs text-center font-mono">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CMYK Model Card -->
+            <div class="bg-gray-900 border border-gray-700/80 rounded-xl p-4 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 px-2 py-0.5 bg-cyan-950/60 border-b border-l border-cyan-800/40 text-[10px] font-mono text-cyan-300 rounded-bl">
+                    Субтрактивная (Печать)
+                </div>
+
+                <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-3 flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 inline-block"></span>
+                    CMYK (Cyan, Magenta, Yellow, Key)
+                </h3>
+
+                <!-- C Slider -->
+                <div class="space-y-1 mb-2.5">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-cyan-400 font-semibold">C (Голубой):</span>
+                        <span id="cmyk-c-val" class="text-gray-200">66%</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="range" id="cmyk-c" min="0" max="100" value="66" oninput="updateFromCMYK()" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        <input type="number" id="cmyk-c-num" min="0" max="100" value="66" onchange="syncCMYKInput('c')" class="w-14 bg-gray-800 border border-gray-700 rounded px-1 py-0.5 text-xs text-center font-mono">
+                    </div>
+                </div>
+
+                <!-- M Slider -->
+                <div class="space-y-1 mb-2.5">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-pink-400 font-semibold">M (Пурпурный):</span>
+                        <span id="cmyk-m-val" class="text-gray-200">69%</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="range" id="cmyk-m" min="0" max="100" value="69" oninput="updateFromCMYK()" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        <input type="number" id="cmyk-m-num" min="0" max="100" value="69" onchange="syncCMYKInput('m')" class="w-14 bg-gray-800 border border-gray-700 rounded px-1 py-0.5 text-xs text-center font-mono">
+                    </div>
+                </div>
+
+                <!-- Y Slider -->
+                <div class="space-y-1 mb-2.5">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-yellow-400 font-semibold">Y (Желтый):</span>
+                        <span id="cmyk-y-val" class="text-gray-200">0%</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="range" id="cmyk-y" min="0" max="100" value="0" oninput="updateFromCMYK()" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        <input type="number" id="cmyk-y-num" min="0" max="100" value="0" onchange="syncCMYKInput('y')" class="w-14 bg-gray-800 border border-gray-700 rounded px-1 py-0.5 text-xs text-center font-mono">
+                    </div>
+                </div>
+
+                <!-- K Slider -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-gray-400 font-semibold">K (Черный):</span>
+                        <span id="cmyk-k-val" class="text-gray-200">10%</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="range" id="cmyk-k" min="0" max="100" value="10" oninput="updateFromCMYK()" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        <input type="number" id="cmyk-k-num" min="0" max="100" value="10" onchange="syncCMYKInput('k')" class="w-14 bg-gray-800 border border-gray-700 rounded px-1 py-0.5 text-xs text-center font-mono">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory Tip -->
+            <div class="bg-indigo-950/40 border border-indigo-800/50 rounded-xl p-3 text-xs text-indigo-200 leading-relaxed">
+                <div class="font-semibold text-indigo-300 mb-1 flex items-center gap-1">
+                    <i data-lucide="lightbulb" class="w-4 h-4 text-yellow-400"></i> Знаете ли вы?
+                </div>
+                RGB смешивает <b>свет</b> (чем больше цвета, тем ближе к белому). CMYK смешивает <b>краски</b> (чем больше краски, тем ближе к темному).
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- MODAL: Gallery -->
+    <div id="gallery-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-gray-800 border border-gray-700 w-full max-w-2xl rounded-xl p-6 shadow-2xl flex flex-col max-h-[85vh]">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="archive" class="w-5 h-5 text-indigo-400"></i>
+                    Галерея Сохраненных Работ (LocalStorage)
+                </h3>
+                <button onclick="closeModal('gallery-modal')" class="text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto mb-4">
+                <div id="gallery-grid" class="grid grid-cols-3 gap-4">
+                    <!-- Gallery items injected here -->
+                </div>
+                <div id="gallery-empty" class="text-center py-12 text-gray-500 hidden">
+                    <i data-lucide="image-off" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
+                    <p>В вашей локальной галерее пока нет сохраненных работ.</p>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-3 border-t border-gray-700">
+                <button onclick="saveToLocalStorageGallery()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Сохранить текущий рисунок в галерею
+                </button>
+                <button onclick="closeModal('gallery-modal')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg text-xs font-medium">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Educational Info -->
+    <div id="info-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-gray-800 border border-gray-700 w-full max-w-xl rounded-xl p-6 shadow-2xl flex flex-col max-h-[85vh]">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-5 h-5 text-indigo-400"></i>
+                    Учебный справочник: RGB vs CMYK
+                </h3>
+                <button onclick="closeModal('info-modal')" class="text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto space-y-4 text-sm text-gray-300 leading-relaxed pr-2">
+                <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                    <h4 class="font-bold text-red-400 mb-1">1. Аддитивная модель RGB (Red, Green, Blue)</h4>
+                    <p class="text-xs text-gray-400 mb-2">Используется в экранах мониторов, смартфонов и телевизоров.</p>
+                    <p class="text-xs">Цвета получаются путем <b>добавления света</b>. Значения каждого канала варьируются от 0 до 255:</p>
+                    <ul class="list-disc list-inside text-xs mt-1 space-y-0.5 text-gray-400 font-mono">
+                        <li>(0, 0, 0) — Абсолютная темнота (Черный цвет)</li>
+                        <li>(255, 255, 255) — Максимальный свет всех излучателей (Белый)</li>
+                        <li>(255, 0, 0) — Только красный свет</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                    <h4 class="font-bold text-cyan-400 mb-1">2. Субтрактивная модель CMYK (Cyan, Magenta, Yellow, Key)</h4>
+                    <p class="text-xs text-gray-400 mb-2">Используется в полиграфии и печати (типографии, принтеры).</p>
+                    <p class="text-xs">Цвета получаются путем <b>поглощения (вычитания) света</b> физическими чернилами на бумаге:</p>
+                    <ul class="list-disc list-inside text-xs mt-1 space-y-0.5 text-gray-400 font-mono">
+                        <li>C (Cyan) — Голубой | M (Magenta) — Пурпурный</li>
+                        <li>Y (Yellow) — Желтый | K (Key/Black) — Черный пигмент</li>
+                        <li>0% всех красок — Чистый лист (Белый)</li>
+                        <li>100% C + M + Y — Темно-коричневый (для чистого черного добавляют K)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-indigo-900/30 border border-indigo-700/50 p-3 rounded-lg text-xs">
+                    <span class="font-semibold text-indigo-300">Как работать в приложении:</span> Попробуйте выставить Red=255, Green=255 в RGB — вы получите желтый цвет. В CMYK аналогичный цвет получается при Yellow=100%, Cyan=0%, Magenta=0%!
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-gray-700 text-right">
+                <button onclick="closeModal('info-modal')" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold">
+                    Понятно!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-gray-800 border border-indigo-500 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 transition-all duration-300 translate-y-20 opacity-0 z-50">
+        <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+        <span id="toast-message" class="text-xs font-medium">Действие выполнено</span>
+    </div>
+
+    <!-- Application Logic Script -->
+    <script>
+        // State variables
+        let gridSize = 16;
+        let pixelSize = 24; // dynamically calculated
+        let activeTool = 'pencil'; // 'pencil', 'bucket', 'picker', 'eraser'
+        let showGrid = true;
+        let zoomLevel = 1.0;
+        let isMouseDown = false;
+
+        // Color State (Internal stored as RGB)
+        let currentRGB = { r: 79, g: 70, b: 229 };
+        let historyPalette = ['#4F46E5', '#EF4444', '#10B981', '#F59E0B', '#3B82F6', '#8B5CF6'];
+
+        // Pixel Data: Array of Hex Strings (null = transparent)
+        let pixels = [];
+
+        // DOM elements
+        const canvas = document.getElementById('pixel-canvas');
+        const ctx = canvas.getContext('2d');
+        const gridCanvas = document.getElementById('grid-canvas');
+        const gridCtx = gridCanvas.getContext('2d');
+        const canvasWrapper = document.getElementById('canvas-wrapper');
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Initialize App on Load
+        window.onload = function() {
+            setGridSize(16);
+            updateColorUI('rgb');
+            renderHistoryPalette();
+            setTool('pencil');
+
+            // Canvas Drawing Listeners
+            canvas.addEventListener('mousedown', handleMouseDown);
+            canvas.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mouseup', () => { isMouseDown = false; });
+
+            // Touch events support
+            canvas.addEventListener('touchstart', handleTouch, { passive: false });
+            canvas.addEventListener('touchmove', handleTouch, { passive: false });
+            window.addEventListener('touchend', () => { isMouseDown = false; });
+
+            // Canvas Hover Coordinates
+            canvas.addEventListener('mousemove', updateCoordinates);
+            canvas.addEventListener('mouseleave', clearCoordinates);
+        };
+
+        // --- GRID & CANVAS INITIALIZATION ---
+        function setGridSize(size) {
+            gridSize = size;
+            pixels = new Array(gridSize * gridSize).fill(null);
+            
+            // Adjust pixel rendering size based on grid resolution
+            if (gridSize === 8) pixelSize = 48;
+            else if (gridSize === 16) pixelSize = 28;
+            else if (gridSize === 32) pixelSize = 15;
+
+            // Update UI Button states
+            [8, 16, 32].forEach(s => {
+                const btn = document.getElementById(`size-${s}`);
+                if (s === size) {
+                    btn.className = "px-2.5 py-1 rounded-md transition font-mono font-semibold bg-indigo-600 text-white shadow";
+                } else {
+                    btn.className = "px-2.5 py-1 rounded-md transition font-mono font-semibold text-gray-400 hover:text-white";
+                }
+            });
+
+            resizeCanvas();
+            renderGridLabels();
+            drawCanvas();
+        }
+
+        function resizeCanvas() {
+            const dimension = gridSize * pixelSize;
+            canvas.width = dimension;
+            canvas.height = dimension;
+            gridCanvas.width = dimension;
+            gridCanvas.height = dimension;
+
+            drawGridOverlay();
+        }
+
+        function renderGridLabels() {
+            const xAxis = document.getElementById('x-axis');
+            const yAxis = document.getElementById('y-axis');
+            xAxis.innerHTML = '';
+            yAxis.innerHTML = '';
+
+            const dimension = gridSize * pixelSize;
+            xAxis.style.width = `${dimension}px`;
+            yAxis.style.height = `${dimension}px`;
+
+            for (let i = 0; i < gridSize; i++) {
+                const xLabel = document.createElement('div');
+                xLabel.style.width = `${pixelSize}px`;
+                xLabel.className = 'text-center font-mono text-[9px] text-gray-500';
+                xLabel.textContent = i;
+                xAxis.appendChild(xLabel);
+
+                const yLabel = document.createElement('div');
+                yLabel.style.height = `${pixelSize}px`;
+                yLabel.className = 'flex items-center justify-end font-mono text-[9px] text-gray-500 pr-1';
+                yLabel.textContent = i;
+                yAxis.appendChild(yLabel);
+            }
+        }
+
+        function drawGridOverlay() {
+            gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+            if (!showGrid) return;
+
+            gridCtx.strokeStyle = 'rgba(156, 163, 175, 0.35)'; // gray-400 semi-transparent
+            gridCtx.lineWidth = 1;
+
+            const dimension = gridSize * pixelSize;
+
+            for (let i = 0; i <= gridSize; i++) {
+                const pos = i * pixelSize;
+                // Vertical lines
+                gridCtx.beginPath();
+                gridCtx.moveTo(pos, 0);
+                gridCtx.lineTo(pos, dimension);
+                gridCtx.stroke();
+
+                // Horizontal lines
+                gridCtx.beginPath();
+                gridCtx.moveTo(0, pos);
+                gridCtx.lineTo(dimension, pos);
+                gridCtx.stroke();
+            }
+        }
+
+        function toggleGrid() {
+            showGrid = !showGrid;
+            const btn = document.getElementById('btn-grid');
+            if (showGrid) {
+                btn.className = "flex items-center space-x-1 px-3 py-1.5 bg-indigo-600/30 text-indigo-300 border border-indigo-500/50 rounded-lg text-xs font-medium transition";
+            } else {
+                btn.className = "flex items-center space-x-1 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg text-xs font-medium transition border border-gray-600";
+            }
+            drawGridOverlay();
+        }
+
+        // --- DRAWING LOGIC ---
+        function drawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const color = pixels[y * gridSize + x];
+                    if (color) {
+                        ctx.fillStyle = color;
+                        ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                    }
+                }
+            }
+        }
+
+        function getPixelCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            const x = Math.floor(((clientX - rect.left) * scaleX) / pixelSize);
+            const y = Math.floor(((clientY - rect.top) * scaleY) / pixelSize);
+
+            if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
+                return { x, y };
+            }
+            return null;
+        }
+
+        function handleMouseDown(e) {
+            isMouseDown = true;
+            applyTool(e);
+        }
+
+        function handleMouseMove(e) {
+            if (isMouseDown && (activeTool === 'pencil' || activeTool === 'eraser')) {
+                applyTool(e);
+            }
+        }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            if (e.type === 'touchstart') isMouseDown = true;
+            applyTool(touch);
+        }
+
+        function applyTool(e) {
+            const coords = getPixelCoords(e);
+            if (!coords) return;
+
+            const { x, y } = coords;
+            const index = y * gridSize + x;
+            const activeHex = (activeTool === 'eraser') ? null : rgbToHex(currentRGB.r, currentRGB.g, currentRGB.b);
+
+            if (activeTool === 'pencil' || activeTool === 'eraser') {
+                if (pixels[index] !== activeHex) {
+                    pixels[index] = activeHex;
+                    drawCanvas();
+                    if (activeTool === 'pencil') addColorToHistory(activeHex);
+                }
+            } else if (activeTool === 'bucket') {
+                const targetColor = pixels[index];
+                if (targetColor !== activeHex) {
+                    floodFill(x, y, targetColor, activeHex);
+                    drawCanvas();
+                    addColorToHistory(activeHex);
+                }
+            } else if (activeTool === 'picker') {
+                const pickedColor = pixels[index];
+                if (pickedColor) {
+                    setColorFromHex(pickedColor);
+                    showToast(`Цвет ${pickedColor} выбран с холста`);
+                    setTool('pencil');
+                }
+            }
+        }
+
+        function floodFill(startX, startY, targetColor, replacementColor) {
+            if (targetColor === replacementColor) return;
+            
+            const queue = [{ x: startX, y: startY }];
+            const visited = new Set();
+
+            while (queue.length > 0) {
+                const { x, y } = queue.pop();
+                const key = `${x},${y}`;
+                
+                if (visited.has(key)) continue;
+                visited.add(key);
+
+                if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) continue;
+
+                const index = y * gridSize + x;
+                if (pixels[index] === targetColor) {
+                    pixels[index] = replacementColor;
+
+                    queue.push({ x: x + 1, y: y });
+                    queue.push({ x: x - 1, y: y });
+                    queue.push({ x: x, y: y + 1 });
+                    queue.push({ x: x, y: y - 1 });
+                }
+            }
+        }
+
+        function clearCanvasPrompt() {
+            pixels.fill(null);
+            drawCanvas();
+            showToast("Холст очищен");
+        }
+
+        // --- TOOL SELECTION ---
+        function setTool(tool) {
+            activeTool = tool;
+            const tools = ['pencil', 'bucket', 'picker', 'eraser'];
+            tools.forEach(t => {
+                const btn = document.getElementById(`tool-${t}`);
+                if (t === tool) {
+                    btn.className = "tool-btn flex items-center space-x-2 p-2 rounded-lg border text-sm font-medium transition bg-indigo-600 border-indigo-500 text-white shadow";
+                } else {
+                    btn.className = "tool-btn flex items-center space-x-2 p-2 rounded-lg border text-sm font-medium transition bg-gray-900 border-gray-700 text-gray-300 hover:bg-gray-700";
+                }
+            });
+        }
+
+        // --- COORDINATES DISPLAY ---
+        function updateCoordinates(e) {
+            const coords = getPixelCoords(e);
+            if (coords) {
+                document.getElementById('coord-x').textContent = coords.x;
+                document.getElementById('coord-y').textContent = coords.y;
+            } else {
+                clearCoordinates();
+            }
+        }
+
+        function clearCoordinates() {
+            document.getElementById('coord-x').textContent = '-';
+            document.getElementById('coord-y').textContent = '-';
+        }
+
+        // --- ZOOM CONTROLS ---
+        function adjustZoom(delta) {
+            zoomLevel = Math.min(Math.max(0.5, zoomLevel + delta), 2.5);
+            updateZoomUI();
+        }
+
+        function resetZoom() {
+            zoomLevel = 1.0;
+            updateZoomUI();
+        }
+
+        function updateZoomUI() {
+            canvasWrapper.style.transform = `scale(${zoomLevel})`;
+            document.getElementById('zoom-level').textContent = `${Math.round(zoomLevel * 100)}%`;
+        }
+
+        // --- COLOR CONVERSION MATHEMATICS ---
+        
+        // RGB (0-255) -> CMYK (0-100%)
+        function rgbToCmyk(r, g, b) {
+            let c = 1 - (r / 255);
+            let m = 1 - (g / 255);
+            let y = 1 - (b / 255);
+            let k = Math.min(c, Math.min(m, y));
+
+            if (k === 1) {
+                return { c: 0, m: 0, y: 0, k: 100 };
+            }
+
+            c = Math.round(((c - k) / (1 - k)) * 100);
+            m = Math.round(((m - k) / (1 - k)) * 100);
+            y = Math.round(((y - k) / (1 - k)) * 100);
+            k = Math.round(k * 100);
+
+            return { c, m, y, k };
+        }
+
+        // CMYK (0-100%) -> RGB (0-255)
+        function cmykToRgb(c, m, y, k) {
+            c = c / 100;
+            m = m / 100;
+            y = y / 100;
+            k = k / 100;
+
+            let r = Math.round(255 * (1 - c) * (1 - k));
+            let g = Math.round(255 * (1 - m) * (1 - k));
+            let b = Math.round(255 * (1 - y) * (1 - k));
+
+            return { r, g, b };
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('').toUpperCase();
+        }
+
+        function hexToRgb(hex) {
+            hex = hex.replace(/^#/, '');
+            if (hex.length === 3) {
+                hex = hex.split('').map(c => c + c).join('');
+            }
+            const intVal = parseInt(hex, 16);
+            return {
+                r: (intVal >> 16) & 255,
+                g: (intVal >> 8) & 255,
+                b: intVal & 255
+            };
+        }
+
+        // --- COLOR STATE MANAGEMENT & SYNCHRONIZATION ---
+
+        function updateFromRGB() {
+            currentRGB.r = parseInt(document.getElementById('rgb-r').value) || 0;
+            currentRGB.g = parseInt(document.getElementById('rgb-g').value) || 0;
+            currentRGB.b = parseInt(document.getElementById('rgb-b').value) || 0;
+
+            updateColorUI('rgb');
+        }
+
+        function updateFromCMYK() {
+            const c = parseInt(document.getElementById('cmyk-c').value) || 0;
+            const m = parseInt(document.getElementById('cmyk-m').value) || 0;
+            const y = parseInt(document.getElementById('cmyk-y').value) || 0;
+            const k = parseInt(document.getElementById('cmyk-k').value) || 0;
+
+            currentRGB = cmykToRgb(c, m, y, k);
+            updateColorUI('cmyk');
+        }
+
+        function syncRGBInput(channel) {
+            const input = document.getElementById(`rgb-${channel}-num`);
+            let val = parseInt(input.value);
+            if (isNaN(val)) val = 0;
+            val = Math.min(255, Math.max(0, val));
+            document.getElementById(`rgb-${channel}`).value = val;
+            updateFromRGB();
+        }
+
+        function syncCMYKInput(channel) {
+            const input = document.getElementById(`cmyk-${channel}-num`);
+            let val = parseInt(input.value);
+            if (isNaN(val)) val = 0;
+            val = Math.min(100, Math.max(0, val));
+            document.getElementById(`cmyk-${channel}`).value = val;
+            updateFromCMYK();
+        }
+
+        function setColorFromHex(hex) {
+            currentRGB = hexToRgb(hex);
+            updateColorUI();
+        }
+
+        function updateColorUI(sourceModel = 'all') {
+            const hex = rgbToHex(currentRGB.r, currentRGB.g, currentRGB.b);
+            const cmyk = rgbToCmyk(currentRGB.r, currentRGB.g, currentRGB.b);
+
+            // Update Color Swatch & Hex Labels
+            document.getElementById('color-preview').style.backgroundColor = hex;
+            document.getElementById('hex-display').textContent = hex;
+            document.getElementById('rgb-quick-display').textContent = `rgb(${currentRGB.r}, ${currentRGB.g}, ${currentRGB.b})`;
+
+            // Sync RGB Controls (If not initiated by RGB sliders)
+            if (sourceModel !== 'rgb') {
+                document.getElementById('rgb-r').value = currentRGB.r;
+                document.getElementById('rgb-g').value = currentRGB.g;
+                document.getElementById('rgb-b').value = currentRGB.b;
+
+                document.getElementById('rgb-r-num').value = currentRGB.r;
+                document.getElementById('rgb-g-num').value = currentRGB.g;
+                document.getElementById('rgb-b-num').value = currentRGB.b;
+            }
+            document.getElementById('rgb-r-val').textContent = currentRGB.r;
+            document.getElementById('rgb-g-val').textContent = currentRGB.g;
+            document.getElementById('rgb-b-val').textContent = currentRGB.b;
+
+            // Sync CMYK Controls (If not initiated by CMYK sliders)
+            if (sourceModel !== 'cmyk') {
+                document.getElementById('cmyk-c').value = cmyk.c;
+                document.getElementById('cmyk-m').value = cmyk.m;
+                document.getElementById('cmyk-y').value = cmyk.y;
+                document.getElementById('cmyk-k').value = cmyk.k;
+
+                document.getElementById('cmyk-c-num').value = cmyk.c;
+                document.getElementById('cmyk-m-num').value = cmyk.m;
+                document.getElementById('cmyk-y-num').value = cmyk.y;
+                document.getElementById('cmyk-k-num').value = cmyk.k;
+            }
+            document.getElementById('cmyk-c-val').textContent = `${cmyk.c}%`;
+            document.getElementById('cmyk-m-val').textContent = `${cmyk.m}%`;
+            document.getElementById('cmyk-y-val').textContent = `${cmyk.y}%`;
+            document.getElementById('cmyk-k-val').textContent = `${cmyk.k}%`;
+        }
+
+        // --- PALETTE HISTORY ---
+        function addColorToHistory(hex) {
+            if (!hex) return;
+            if (historyPalette.includes(hex)) {
+                // Move to front
+                historyPalette = historyPalette.filter(c => c !== hex);
+            }
+            historyPalette.unshift(hex);
+            if (historyPalette.length > 10) historyPalette.pop();
+            renderHistoryPalette();
+        }
+
+        function renderHistoryPalette() {
+            const container = document.getElementById('palette-history');
+            container.innerHTML = '';
+            historyPalette.forEach(color => {
+                const btn = document.createElement('button');
+                btn.className = "w-full aspect-square rounded border border-gray-600 hover:scale-110 transition shadow-sm";
+                btn.style.backgroundColor = color;
+                btn.title = color;
+                btn.onclick = () => setColorFromHex(color);
+                container.appendChild(btn);
+            });
+        }
+
+        // --- IMPORT & EXPORT FEATURES ---
+
+        function exportPNG() {
+            // Create off-screen canvas to render image at high crisp resolution
+            const exportCanvas = document.createElement('canvas');
+            const exportCtx = exportCanvas.getContext('2d');
+            const exportScale = 32; // Scaling factor for clean pixel art export
+            exportCanvas.width = gridSize * exportScale;
+            exportCanvas.height = gridSize * exportScale;
+
+            // Turn off image smoothing for pixel-perfect clarity
+            exportCtx.imageSmoothingEnabled = false;
+
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const color = pixels[y * gridSize + x];
+                    if (color) {
+                        exportCtx.fillStyle = color;
+                        exportCtx.fillRect(x * exportScale, y * exportScale, exportScale, exportScale);
+                    }
+                }
+            }
+
+            const link = document.createElement('a');
+            link.download = `pixel-art-${gridSize}x${gridSize}-${Date.now()}.png`;
+            link.href = exportCanvas.toDataURL('image/png');
+            link.click();
+            showToast("Рисунок успешно экспортирован в PNG!");
+        }
+
+        function saveProject() {
+            const projectData = {
+                gridSize,
+                pixels,
+                timestamp: Date.now()
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `pixel-project-${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Проект сохранен в формате JSON");
+        }
+
+        function loadProject(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const project = JSON.parse(e.target.result);
+                    if (project.gridSize && project.pixels) {
+                        setGridSize(project.gridSize);
+                        pixels = project.pixels;
+                        drawCanvas();
+                        showToast("Проект успешно загружен!");
+                    } else {
+                        throw new Error("Неверный формат");
+                    }
+                } catch (err) {
+                    showToast("Ошибка при чтении файла проекта");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- LOCAL STORAGE GALLERY ---
+
+        function openGallery() {
+            renderGallery();
+            openModal('gallery-modal');
+        }
+
+        function saveToLocalStorageGallery() {
+            let gallery = JSON.parse(localStorage.getItem('pixel_art_gallery') || '[]');
+            
+            // Render snapshot to Data URL
+            const snapCanvas = document.createElement('canvas');
+            snapCanvas.width = gridSize * 8;
+            snapCanvas.height = gridSize * 8;
+            const snapCtx = snapCanvas.getContext('2d');
+            
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const color = pixels[y * gridSize + x];
+                    if (color) {
+                        snapCtx.fillStyle = color;
+                        snapCtx.fillRect(x * 8, y * 8, 8, 8);
+                    }
+                }
+            }
+
+            const newItem = {
+                id: Date.now(),
+                gridSize,
+                pixels: [...pixels],
+                preview: snapCanvas.toDataURL(),
+                date: new Date().toLocaleDateString('ru-RU')
+            };
+
+            gallery.unshift(newItem);
+            localStorage.setItem('pixel_art_gallery', JSON.stringify(gallery));
+            renderGallery();
+            showToast("Сохранено в локальную галерею!");
+        }
+
+        function renderGallery() {
+            const gallery = JSON.parse(localStorage.getItem('pixel_art_gallery') || '[]');
+            const grid = document.getElementById('gallery-grid');
+            const emptyState = document.getElementById('gallery-empty');
+
+            grid.innerHTML = '';
+            if (gallery.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            gallery.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-gray-900 border border-gray-700 p-2.5 rounded-lg flex flex-col justify-between space-y-2 relative group";
+                
+                card.innerHTML = `
+                    <div class="checkerboard-bg rounded border border-gray-700 overflow-hidden aspect-square flex items-center justify-center">
+                        <img src="${item.preview}" class="w-full h-full object-contain pixelated">
+                    </div>
+                    <div class="flex justify-between items-center text-[11px] text-gray-400">
+                        <span class="font-mono">${item.gridSize}x${item.gridSize}</span>
+                        <span>${item.date}</span>
+                    </div>
+                    <div class="flex space-x-1">
+                        <button onclick="loadFromGallery(${item.id})" class="flex-1 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-semibold transition">
+                            Открыть
+                        </button>
+                        <button onclick="deleteFromGallery(${item.id})" class="px-2 py-1 bg-red-900/50 hover:bg-red-800 text-red-200 rounded text-xs transition">
+                            <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function loadFromGallery(id) {
+            const gallery = JSON.parse(localStorage.getItem('pixel_art_gallery') || '[]');
+            const item = gallery.find(g => g.id === id);
+            if (item) {
+                setGridSize(item.gridSize);
+                pixels = [...item.pixels];
+                drawCanvas();
+                closeModal('gallery-modal');
+                showToast("Рисунок загружен из галереи");
+            }
+        }
+
+        function deleteFromGallery(id) {
+            let gallery = JSON.parse(localStorage.getItem('pixel_art_gallery') || '[]');
+            gallery = gallery.filter(g => g.id !== id);
+            localStorage.setItem('pixel_art_gallery', JSON.stringify(gallery));
+            renderGallery();
+            showToast("Удалено из галереи");
+        }
+
+        // --- UTILITY FUNCTIONS ---
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
