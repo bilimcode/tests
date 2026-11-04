@@ -85,7 +85,7 @@ const lessonsData = {
             { id: 6, title: "Урок 6. Практикум. Файловая система", url: "https://forms.gle/zMEPc7J2r4mWsZWo7" },
             { id: 7, title: "Урок 7. СОР №1", url: "#" },
             { id: 8, title: "Урок 8. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
-            { id: 9, title: "Урок 9. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
+            { id: 9, title: "Урок 9. Интерфейс Inkscape", url: "https://forms.gle/aNBDak9AxwxeRy3f7" },
             { id: 10, title: "Урок 10. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 11, title: "Урок 11. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 12, title: "Урок 12. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
