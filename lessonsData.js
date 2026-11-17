@@ -13,7 +13,7 @@ const lessonsData = {
             { id: 8, title: "Урок 8. НЕТ ЗАДАНИЯ", url: "https://example.com/info5-3" },
             { id: 9, title: "Урок 9. Датчик цвета", url: "https://drive.google.com/drive/folders/1VWJxh546D7RZmN04dWbFIpbWTSg3b1kE?usp=drive_link" },
             { id: 10, title: "Урок 10. Робот-светофор", url: "https://drive.google.com/drive/folders/1XshnAVk2CYsZRe8U6EZYHE5_7bCW6vvs?usp=sharing" },
-            { id: 11, title: "Урок 11. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
+            { id: 11, title: "Урок 11. Дальномер", url: "https://drive.google.com/drive/folders/1IwBME-B3isPRfKk4kkobzjPqG6ivIDNh?usp=sharing" },
             { id: 12, title: "Урок 12. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 13, title: "Урок 13. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 14, title: "Урок 14. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
