@@ -50,7 +50,7 @@ const lessonsData = {
             { id: 8, title: "Урок 8. Двоичный код", url: "https://docs.google.com/forms/d/e/1FAIpQLSe0SG9XSA3atSjmzSxIQEpkLaX438C8swtrRF943loL1L7gdw/viewform?usp=header" },
             { id: 9, title: "Урок 9. Pixel Studio", url: "lessons/5grade/lesson9Pixelart.html" },
             { id: 10, title: "Урок 10. Растровая графика", url: "https://forms.gle/XTgincVPZostJsnc8" },
-            { id: 11, title: "Урок 11. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
+            { id: 11, title: "Урок 11. Лассо", url: "https://forms.gle/7KyJgvFcGw8r5T8D7" },
             { id: 12, title: "Урок 12. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 13, title: "Урок 13. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 14, title: "Урок 14. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
