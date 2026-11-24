@@ -14,7 +14,7 @@ const lessonsData = {
             { id: 9, title: "Урок 9. Датчик цвета", url: "https://drive.google.com/drive/folders/1VWJxh546D7RZmN04dWbFIpbWTSg3b1kE?usp=drive_link" },
             { id: 10, title: "Урок 10. Робот-светофор", url: "https://drive.google.com/drive/folders/1XshnAVk2CYsZRe8U6EZYHE5_7bCW6vvs?usp=sharing" },
             { id: 11, title: "Урок 11. Дальномер", url: "https://drive.google.com/drive/folders/1IwBME-B3isPRfKk4kkobzjPqG6ivIDNh?usp=sharing" },
-            { id: 12, title: "Урок 12. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
+            { id: 12, title: "Урок 12. Универсальный робот", url: "https://drive.google.com/drive/folders/1iOTHB4zas1Zu6E6MMcI-5924xZ6_Kb1F?usp=sharing" },
             { id: 13, title: "Урок 13. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 14, title: "Урок 14. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 15, title: "Урок 15. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
