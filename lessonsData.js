@@ -342,7 +342,7 @@ const lessonsData = {
             { id: 9, title: "Урок 9. ШИМ", url: "https://drive.google.com/file/d/1BWF7lK7A8DLy6PqvGuCBdAjnQhUwpShJ/view?usp=sharing" },
             { id: 10, title: "Урок 10. RGB-светодиод", url: "https://drive.google.com/file/d/1eV4l4kFerl4WwIwZwwJLdmVTxT1-y8wV/view?usp=drive_link" },
             { id: 11, title: "Урок 11. Пьезопищалка", url: "https://drive.google.com/file/d/1zD1-iC4t6cK-en1aHDMt-3n9XuLbyqYX/view?usp=sharing" },
-            { id: 12, title: "Урок 12. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
+            { id: 12, title: "Урок 12. Потенциометр", url: "https://forms.gle/qQuZP4x4t6qFDY6AA" },
             { id: 13, title: "Урок 13. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 14, title: "Урок 14. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 15, title: "Урок 15. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
