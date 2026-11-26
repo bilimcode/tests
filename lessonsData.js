@@ -88,7 +88,7 @@ const lessonsData = {
             { id: 9, title: "Урок 9. Интерфейс Inkscape", url: "https://forms.gle/aNBDak9AxwxeRy3f7" },
             { id: 10, title: "Урок 10. Перо", url: "https://forms.gle/UaKyvZ5HUy3tZ3Nh8" },
             { id: 11, title: "Урок 11. Натюрморт", url: "https://forms.gle/bN6FE3mSqCt9teDt7" },
-            { id: 12, title: "Урок 12. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
+            { id: 12, title: "Урок 12. Практикум: Аватар", url: "https://forms.gle/XiZsnAvSWmAbybGs6" },
             { id: 13, title: "Урок 13. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 14, title: "Урок 14. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
             { id: 15, title: "Урок 15. НЕТ ЗАДАНИЯ", url: "https://example.com/robot8-1" },
